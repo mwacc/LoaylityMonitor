@@ -45,6 +45,8 @@
     <modules>
         <module>flume-agent</module>
         <module>batch-admin</module>
+        <module>custom-pig</module>
+        <module>windows-pig-fix</module>
     </modules>
 
     <repositories>
