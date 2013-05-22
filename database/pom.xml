@@ -18,8 +18,6 @@
     </properties>
 
     <dependencies>
-
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -28,7 +26,10 @@
         </dependency>
     </dependencies>
 
-
+    <!--
+     Use next command to update DB:
+        mvn resources:resources liquibase:update -P<profile_name>
+     -->
     <build>
         <plugins>
             <plugin>
