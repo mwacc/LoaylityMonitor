@@ -47,6 +47,7 @@
         <module>batch-admin</module>
         <module>custom-pig</module>
         <module>windows-pig-fix</module>
+        <module>database</module>
     </modules>
 
     <repositories>
