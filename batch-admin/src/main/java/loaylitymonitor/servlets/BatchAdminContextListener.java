@@ -24,6 +24,7 @@ public class BatchAdminContextListener implements ServletContextListener{
     // -------------------------------------------------------
     public void contextInitialized(ServletContextEvent sce) {
         try {
+            String springConfig = sce.getServletContext().getInitParameter("param");
             System.out.println("Initializing Quartz scheduler");
             logger.info("Initializing Quartz scheduler");
 
