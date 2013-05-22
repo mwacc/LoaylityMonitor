@@ -7,9 +7,12 @@ SET  default_parallel $parallel
 SET  mapred.job.name 'Base Twitter aggregation job'
 SET  pig.tmpfilecompression false
 
-DEFINE TweetsLoader com.twitter.elephantbird.pig.load.JsonLoader();
+-- it works in production, but custom loader doesn't work with PigUnit
+--DEFINE TweetsLoader com.twitter.elephantbird.pig.load.JsonLoader();
+DEFINE StringToTweet com.twitter.elephantbird.pig.piggybank.JsonStringToMap();
 
-raw = LOAD '$input' USING TweetsLoader AS (json: map[]);
---tweets = FOREACH raw GENERATE json#'text' AS text, json#'created_at' AS timestamp;
+raw_line = LOAD '$input' AS (line:CHARARRAY);
+json = FOREACH raw_line GENERATE StringToTweet(line);
+tweets = FOREACH json GENERATE $0#'text' AS text, $0#'created_at' AS timestamp;
 
-STORE raw INTO '$output';
+STORE tweets INTO '$output';

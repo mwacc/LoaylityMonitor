@@ -22,7 +22,7 @@ public final class FixHadoopOnWindows
 
     // set up correct temporary directory on windows
     private static void setUpSystemVariables() {
-        System.getProperties().setProperty("java.io.tmpdir", "D:/word/TMP/");
+        System.getProperties().setProperty("java.io.tmpdir", "D:/work/TMP/");
     }
 
     /**

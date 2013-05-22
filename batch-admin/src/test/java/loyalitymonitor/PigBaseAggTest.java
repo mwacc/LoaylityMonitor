@@ -17,8 +17,8 @@ import java.util.Properties;
 
 public class PigBaseAggTest {
     private String[] args = {
-            "input=D:/word/TMP/pig/input",
-            "output=D:/word/TMP/pig/output",
+            "input=null",
+            "output=null",
             "parallel=2",
             "pathToElephantBird=batch-admin/src/main/resources/jars/elephant-bird-pig-3.0.0.jar",
             "pathToSimpleJson=batch-admin/src/main/resources/jars/json-simple-1.1.1.jar"
@@ -36,9 +36,6 @@ public class PigBaseAggTest {
         cluster = PigTest.getCluster();
     }
 
-    public void tearDown() throws Exception  {
-        cluster.delete(new Path("D:/word/TMP/pig"));
-    }
 
 
     @Test
@@ -48,10 +45,10 @@ public class PigBaseAggTest {
         };
 
         String[] output = {
-                "(http://t.co/plqm772pZT: President Obama: Our prayers are with Oklahoma http://t.co/KA39nyo4L0 #Pinterest #news,Sun Nov 07 03:31:23 +0000 2010)",
+                "(http://t.co/plqm772pZT: President Obama: Our prayers are with Oklahoma http://t.co/KA39nyo4L0 #Pinterest #news,Wed May 22 08:32:45 +0000 2013\")",
         };
 
-        test.assertOutput("raw", input, "raw", output);
+        test.assertOutput("raw_line", input, "tweets", output);
     }
 
 
