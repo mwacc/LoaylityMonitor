@@ -37,7 +37,7 @@ public class RunBaseAggregationJob implements Job {
             }
 
             // TODO: run spring batch job
-            CommandLineJobRunner.main(new String[]{"spring-context.xml", "baseAggJob"});
+            CommandLineJobRunner.main(new String[]{"classpath*:spring-context.xml", "baseAggJob"});
         } catch (Exception e) {
             logger.error("Can't run spring batch 'baseAggJob' job" + e);
         }
