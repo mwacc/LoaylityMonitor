@@ -17,6 +17,7 @@
 
     <hdp:pig-factory exec-type="LOCAL" configuration-ref="hadoopConfiguration" />
 
+
     <batch:job-repository id="jobRepository"
                           data-source="dataSource"
                           transaction-manager="transactionManager"
@@ -25,14 +26,16 @@
                           max-varchar-length="1000"
             />
 
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository"/>
+    </bean>
+
     <!-- Required to re-run jobs (access to history) -->
     <bean id="jobExplorer" class="org.springframework.batch.core.explore.support.JobExplorerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
-        <property name="jobRepository" ref="jobRepository"/>
-    </bean>
+
 
     <hdp:pig-template/>
 

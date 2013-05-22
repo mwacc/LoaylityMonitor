@@ -1,0 +1,46 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="1" author="Kostya">
+        <comment>Create star-schema for mood tracking in Tweets</comment>
+        <createTable tableName="campaign_dim">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)"/>
+            <column name="keyword" type="varchar(250)"/>
+        </createTable>
+        <createTable tableName="date_dim">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="date" type="TIMESTAMP"/>
+        </createTable>
+        <createTable tableName="sentiments_facts">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="campaignid" type="int"/>
+            <column name="dateid" type="int"/>
+            <column name="messagenum" type="int"/>
+            <column name="sentiments" type="decimal(10,2)"/>
+            <column name="possentiment" type="decimal(10,2)"/>
+            <column name="negsentiment" type="decimal(10,2)"/>
+        </createTable>
+        <addForeignKeyConstraint constraintName="category_fk"
+            baseTableName="sentiments_facts"
+            baseColumnNames="campaignid"
+            referencedTableName="campaign_dim"
+            referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint constraintName="date_fk"
+                                 baseTableName="sentiments_facts"
+                                 baseColumnNames="dateid"
+                                 referencedTableName="date_dim"
+                                 referencedColumnNames="id"
+                />
+    </changeSet>
+
+
+</databaseChangeLog>

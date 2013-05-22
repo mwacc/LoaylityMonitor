@@ -18,24 +18,6 @@ public class RunBaseAggregationJob implements Job {
         System.out.println("Start cron job");
         logger.info("Cron start executing ");
         try {
-            // TODO: remove these pronting, only for debug
-            // Directory path here
-            String path = ".";
-
-            String files;
-            File folder = new File(path);
-            File[] listOfFiles = folder.listFiles();
-
-            for (int i = 0; i < listOfFiles.length; i++)
-            {
-
-                if (listOfFiles[i].isFile())
-                {
-                    files = listOfFiles[i].getName();
-                    System.out.println(files);
-                }
-            }
-
             // TODO: run spring batch job
             CommandLineJobRunner.main(new String[]{"classpath:/spring/spring-context.xml", "baseAggJob"});
         } catch (Exception e) {
