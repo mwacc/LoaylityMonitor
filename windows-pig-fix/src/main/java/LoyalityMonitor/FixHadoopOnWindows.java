@@ -13,7 +13,7 @@ import javassist.NotFoundException;
  */
 public final class FixHadoopOnWindows
 {
-    public static void runFix() throws NotFoundException, CannotCompileException {
+    public static void runFix() throws Exception {
         if( isWindows() ) { // run fix only on Windows
             setUpSystemVariables();
             fixCheckReturnValueMethod();
@@ -22,19 +22,23 @@ public final class FixHadoopOnWindows
 
     // set up correct temporary directory on windows
     private static void setUpSystemVariables() {
-        System.getProperties().setProperty("java.io.tmpdir", "D:/TMP/");
+        System.getProperties().setProperty("java.io.tmpdir", "D:/word/TMP/");
     }
 
     /**
      * org.apache.hadoop.fs.FileUtil#checkReturnValue doesn't work on Windows at all
      * so, let's change method body with Javassist on empty body
      */
-    private static void fixCheckReturnValueMethod() throws NotFoundException, CannotCompileException {
-        ClassPool cp = new ClassPool(true);
-        CtClass ctClass = cp.get("org.apache.hadoop.fs.FileUtil");
-        CtMethod ctMethod = ctClass.getDeclaredMethod("checkReturnValue");
-        ctMethod.setBody("{  }");
-        ctClass.toClass();
+    private static void fixCheckReturnValueMethod() throws Exception {
+        try {
+            ClassPool cp = new ClassPool(true);
+            CtClass ctClass = cp.get("org.apache.hadoop.fs.FileUtil");
+            CtMethod ctMethod = ctClass.getDeclaredMethod("checkReturnValue");
+            ctMethod.setBody("{  }");
+            ctClass.toClass();
+        }catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
     private static boolean isWindows() {
