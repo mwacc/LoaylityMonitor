@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:hdp="http://www.springframework.org/schema/hadoop"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/hadoop http://www.springframework.org/schema/hadoop/spring-hadoop.xsd
+       http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <context:property-placeholder  location="app.properties"/>
+
+    <!-- <hdp:configuration id="hadoopConfiguration" properties-location="classpath:app.properties"/> -->
+
+    <hdp:configuration id="hadoopConfiguration"/>
+
+    <hdp:pig-factory exec-type="LOCAL" configuration-ref="hadoopConfiguration" />
+
+    <batch:job-repository id="jobRepository"
+                          data-source="dataSource"
+                          transaction-manager="transactionManager"
+                          isolation-level-for-create="SERIALIZABLE"
+                          table-prefix="batch_"
+                          max-varchar-length="1000"
+            />
+
+    <!-- Required to re-run jobs (access to history) -->
+    <bean id="jobExplorer" class="org.springframework.batch.core.explore.support.JobExplorerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository"/>
+    </bean>
+
+    <hdp:pig-template/>
+
+    <!-- Required to get access to jobParameters from Hadoop tasklets -->
+    <bean class="org.springframework.batch.core.scope.StepScope">
+        <property name="proxyTargetClass" value="true"/>
+    </bean>
+
+    <!-- Batch -->
+    <batch:job id="baseAggJob" job-repository="jobRepository">
+        <batch:step id="prepareData" >
+            <batch:tasklet ref="prepare-script-tasklet" />
+        </batch:step>
+
+    </batch:job>
+
+    <!-- groovy script that push data to timed directory (preparation step)
+     Scope 'step' is obligated to provide access to jobParameters
+     -->
+    <hdp:script-tasklet id="prepare-script-tasklet" scope="step">
+        <hdp:script language="groovy" evaluate="ALWAYS">
+            // fs - org.apache.hadoop.fs.FileSystem
+            // fsh - org.springframework.data.hadoop.fs.FsShell instance based on 'hadoopConfiguration' bean
+            // distcp	org.springframework.data.hadoop.fs.DistributedCopyUtil	Programmatic access to DistCp
+            // jobParamaters = job parameters from spring batch
+
+            println "Inside tasklet"
+
+        </hdp:script>
+    </hdp:script-tasklet>
+
+
+    <bean id="dataSource" class="org.enhydra.jdbc.pool.StandardPoolDataSource"
+          destroy-method="shutdown">
+        <constructor-arg index="0">
+            <ref bean="outConnectionDataSource"/>
+        </constructor-arg>
+        <property name="maxSize" value="10"/>
+        <property name="minSize" value="5"/>
+    </bean>
+
+    <!-- datasources configurations -->
+    <bean id="outConnectionDataSource"
+          class="org.enhydra.jdbc.standard.StandardConnectionPoolDataSource"
+          destroy-method="shutdown">
+        <property name="driverName" value="${db.out.driver}"/>
+        <property name="url" value="${db.out.connection}"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+</beans>
