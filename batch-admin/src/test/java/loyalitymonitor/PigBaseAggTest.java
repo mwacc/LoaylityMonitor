@@ -45,7 +45,7 @@ public class PigBaseAggTest {
         };
 
         String[] output = {
-                "(http://t.co/plqm772pZT: President Obama: Our prayers are with Oklahoma http://t.co/KA39nyo4L0 #Pinterest #news,Wed May 22 08:32:45 +0000 2013\")",
+                "(http://t.co/plqm772pZT: President Obama: Our prayers are with Oklahoma http://t.co/KA39nyo4L0 #Pinterest #news,Wed May 22 08:32:45 +0000 2013)",
         };
 
         test.assertOutput("raw_line", input, "tweets", output);
