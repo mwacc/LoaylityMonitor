@@ -4,15 +4,8 @@
 
 <web-app>
     <display-name>Archetype Created Web Application</display-name>
-
-    <servlet>
-        <servlet-name>InitializeServlet</servlet-name>
-        <servlet-class>loaylitymonitor.servlets.InitializeServlet</servlet-class>
-        <init-param>
-            <param-name>shutdown-on-unload</param-name>
-            <param-value>true</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
+    <listener>
+        <listener-class>loaylitymonitor.servlets.BatchAdminContextListener</listener-class>
+    </listener>
 
 </web-app>

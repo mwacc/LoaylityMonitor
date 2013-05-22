@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
+@Deprecated
 public class InitializeServlet extends HttpServlet {
 
     private static Logger logger = LoggerFactory.getLogger(InitializeServlet.class);
