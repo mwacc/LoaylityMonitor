@@ -24,4 +24,10 @@ json = FOREACH raw_line GENERATE StringToTweet(line);
 tweets = FOREACH json GENERATE $0#'text' AS text, $0#'created_at' AS timestamp;
 categorized_tweets = FOREACH tweets GENERATE FLATTEN(ExtractCategory(text)) as (category, text), GetSentiment(text) as sentiment, RoundUpDate(timestamp) as timestamp;
 
+grouped_tweets = GROUP categorized_tweets BY timestamp, category;
+agg_tweets = FOREACH grouped_tweets GENERATE
+    FLATTEN(group) AS (category, timestamp),
+    COUNT(categorized_tweets) as count,
+    AVG(categorized_tweets.sentiment) as average;
+
 STORE tweets INTO '$output';
