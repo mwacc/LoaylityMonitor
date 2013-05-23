@@ -30,4 +30,4 @@ agg_tweets = FOREACH grouped_tweets GENERATE
     COUNT(categorized_tweets) as count,
     AVG(categorized_tweets.sentiment) as average;
 
-STORE tweets INTO '$output';
+STORE agg_tweets INTO '$output';
