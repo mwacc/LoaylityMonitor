@@ -56,7 +56,7 @@ public class PigBaseAggTest {
     }
 
 
-
+    // TODO: fix this test by providing env-specific pathet to dim cache
     @Test
     public void testBaseAggregation() throws IOException, ParseException {
         String[] input = {
@@ -64,7 +64,7 @@ public class PigBaseAggTest {
         };
 
         String[] output = {
-                "(http://t.co/plqm772pZT: President Obama: Our prayers are with Oklahoma http://t.co/KA39nyo4L0 #Pinterest #news,Wed May 22 08:32:45 +0000 2013)",
+                "(1,http://t.co/plqm772pZT: President Obama: Our prayers are with Oklahoma http://t.co/KA39nyo4L0 #Pinterest #news,2,Wed May 22 08:32:45 +0000 2013)",
         };
 
         test.assertOutput("raw_line", input, "tweets", output);
