@@ -10,9 +10,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SentimentsEvaluator extends EvalFunc<Tuple> {
-    private static final TupleFactory tupleFactory = TupleFactory.getInstance();
-
+public class SentimentsEvaluator extends EvalFunc<Integer> {
     private Map<String, Integer> sentiments = null;
 
     private void loadSentimentsMap() throws IOException {
@@ -33,14 +31,13 @@ public class SentimentsEvaluator extends EvalFunc<Tuple> {
     }
 
     @Override
-    public Tuple exec(Tuple input) throws IOException {
+    public Integer exec(Tuple input) throws IOException {
         if(sentiments == null) {
             loadSentimentsMap();
         }
         if (input == null || input.size() == 0) {
             return null;
         }
-        Tuple outputTuple = tupleFactory.newTuple();
 
         String inputLine = (String)input.get(0);
         String[] splitInputLine = inputLine.split("\\s");
@@ -52,8 +49,7 @@ public class SentimentsEvaluator extends EvalFunc<Tuple> {
                 tweetSentimentScore += sentiments.get(s);
             }
         }
-        outputTuple.append(tweetSentimentScore);
 
-        return outputTuple;
+        return tweetSentimentScore;
     }
 }

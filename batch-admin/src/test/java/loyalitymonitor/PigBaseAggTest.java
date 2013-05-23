@@ -56,7 +56,7 @@ public class PigBaseAggTest {
     }
 
 
-    // TODO: fix this test by providing env-specific pathet to dim cache
+    // TODO: fix this test by providing env-specific paths to dim cache
     @Test
     public void testBaseAggregation() throws IOException, ParseException {
         String[] input = {

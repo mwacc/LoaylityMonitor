@@ -21,6 +21,8 @@ DEFINE GetSentiment loyalitymonitor.SentimentsEvaluator();
 raw_line = LOAD '$input' AS (line:CHARARRAY);
 json = FOREACH raw_line GENERATE StringToTweet(line);
 tweets = FOREACH json GENERATE $0#'text' AS text, $0#'created_at' AS timestamp;
-categorized_tweets = FOREACH tweets GENERATE FLATTEN(ExtractCategory(text)) as (category, text), FLATTEN(GetSentiment(text)) as sentiment, timestamp as timestamp;
+categorized_tweets = FOREACH tweets GENERATE FLATTEN(ExtractCategory(text)) as (category, text), GetSentiment(text) as sentiment, timestamp as timestamp;
+
+
 
 STORE tweets INTO '$output';

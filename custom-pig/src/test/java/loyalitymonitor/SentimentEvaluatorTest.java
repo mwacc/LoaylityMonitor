@@ -31,9 +31,8 @@ public class SentimentEvaluatorTest {
     public void testSentimentScore() throws IOException {
         Tuple tuple = tupleFactory.newTuple();
         tuple.append("Yesterday was increddible, amazing, great sunny day!");
-        Tuple t = sentimentsEvaluator.exec(tuple);
-        Assert.assertEquals( "Expected tuple size is 1", 1, t.size() );
-        Assert.assertEquals( "Expected sentiment score is 15", 15, t.get(0) );
+        int i = sentimentsEvaluator.exec(tuple);
+        Assert.assertEquals( "Expected sentiment score is 15", 15, i );
     }
 
 }
