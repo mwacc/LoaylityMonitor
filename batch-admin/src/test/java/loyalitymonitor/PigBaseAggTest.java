@@ -10,25 +10,43 @@ import org.apache.pig.pigunit.pig.PigServer;
 import org.apache.pig.tools.parameters.ParseException;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-public class PigBaseAggTest {
-    private String[] args = {
-            "input=null",
-            "output=null",
-            "parallel=2",
-            "pathToElephantBird=batch-admin/src/main/resources/jars/elephant-bird-pig-3.0.0.jar",
-            "pathToSimpleJson=batch-admin/src/main/resources/jars/json-simple-1.1.1.jar"
-    };
 
+public class PigBaseAggTest {
+    private String[] args = {};
     private PigTest test;
     private Cluster cluster;
 
+    // TODO: must be env specific
+    // TODO: these path doesn't work w/ "maven test" !
+    private String pathTojars = "batch-admin/src/main/resources/jars";
+
+
     @Before
     public void setUp() throws Exception {
+        String[] _args = {
+                "input=null",
+                "output=null",
+                "parallel=2",
+                String.format("pathToElephantBird=%s/elephant-bird-pig-3.0.0.jar", pathTojars),
+                String.format("pathToSimpleJson=batch-admin/src/main/resources/jars/json-simple-1.1.1.jar", pathTojars)
+        };
+
+        this.args = _args;
+
         PigServer pigServer = new PigServer(ExecType.LOCAL);
         test = new PigTest("batch-admin/src/main/resources/pig/baseAggJob.pig", args, pigServer, new Cluster(pigServer.getPigContext()));
 
@@ -50,7 +68,5 @@ public class PigBaseAggTest {
 
         test.assertOutput("raw_line", input, "tweets", output);
     }
-
-
 
 }
