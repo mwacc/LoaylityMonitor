@@ -28,6 +28,12 @@
             referencedTableName="campaign_dim"
             referencedColumnNames="id"
         />
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="sentiments_facts"
+                                      constraintName="category_fk"/>
+            <dropTable tableName="sentiments_facts"/>
+            <dropTable tableName="campaign_dim"/>
+        </rollback>
     </changeSet>
 
 
