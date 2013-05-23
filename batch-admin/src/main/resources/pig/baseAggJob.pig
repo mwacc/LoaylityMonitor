@@ -16,7 +16,7 @@ set mapred.create.symlink 'yes';
 DEFINE StringToTweet com.twitter.elephantbird.pig.piggybank.JsonStringToMap();
 DEFINE ExtractCategory loyalitymonitor.CategoryNumberEvaluator();
 DEFINE GetSentiment loyalitymonitor.SentimentsEvaluator();
-DEFINE RoundUpDate loyalitymonitor.TimestampRoundUp('2');
+DEFINE RoundUpDate loyalitymonitor.TimestampRoundUp('5');
 
 -- raw_line = LOAD '/loyalitymonitor/data/test/tweet.json' AS (line:CHARARRAY);
 raw_line = LOAD '$input' AS (line:CHARARRAY);
