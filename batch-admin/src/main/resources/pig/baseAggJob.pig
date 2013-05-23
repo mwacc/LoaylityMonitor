@@ -16,13 +16,12 @@ set mapred.create.symlink 'yes';
 DEFINE StringToTweet com.twitter.elephantbird.pig.piggybank.JsonStringToMap();
 DEFINE ExtractCategory loyalitymonitor.CategoryNumberEvaluator();
 DEFINE GetSentiment loyalitymonitor.SentimentsEvaluator();
+DEFINE RoundUpDate loyalitymonitor.TimestampRoundUp('10');
 
 -- raw_line = LOAD '/loyalitymonitor/data/test/tweet.json' AS (line:CHARARRAY);
 raw_line = LOAD '$input' AS (line:CHARARRAY);
 json = FOREACH raw_line GENERATE StringToTweet(line);
 tweets = FOREACH json GENERATE $0#'text' AS text, $0#'created_at' AS timestamp;
-categorized_tweets = FOREACH tweets GENERATE FLATTEN(ExtractCategory(text)) as (category, text), GetSentiment(text) as sentiment, timestamp as timestamp;
-
-
+categorized_tweets = FOREACH tweets GENERATE FLATTEN(ExtractCategory(text)) as (category, text), GetSentiment(text) as sentiment, RoundUpDate(timestamp) as timestamp;
 
 STORE tweets INTO '$output';

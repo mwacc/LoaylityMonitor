@@ -22,8 +22,8 @@ public class TimestampRoundUp extends EvalFunc<String> {
 
     private int roundUpTo;
 
-    public TimestampRoundUp(int minutes) {
-        this.roundUpTo = minutes;
+    public TimestampRoundUp(String minutes) {
+        this.roundUpTo = Integer.parseInt(minutes);
 
         this.inputDateFormat = new SimpleDateFormat(TWITTER);
         this.inputDateFormat.setLenient(true);
