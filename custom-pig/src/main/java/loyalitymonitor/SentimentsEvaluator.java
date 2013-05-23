@@ -12,6 +12,15 @@ import java.util.Map;
 
 public class SentimentsEvaluator extends EvalFunc<Integer> {
     private Map<String, Integer> sentiments = null;
+    private char sentimentMood = '0'; // 0 - all sentiments, P - only positive, N - only negatives
+
+    public SentimentsEvaluator(String sentimentMoodIndicator) {
+        this.sentimentMood = "P".equals(sentimentMoodIndicator) ? 'P' : 'N';
+    }
+
+    public SentimentsEvaluator() {
+        this.sentimentMood = '0';
+    }
 
     private void loadSentimentsMap() throws IOException {
         Map<String, Integer> _sentiments = new HashMap<String, Integer>();
@@ -46,7 +55,17 @@ public class SentimentsEvaluator extends EvalFunc<Integer> {
             // remove all punctuation symbols
             s = s.replaceAll("(\\w+)\\p{Punct}(\\s|$)", "$1$2");
             if( sentiments.containsKey(s) ) {
-                tweetSentimentScore += sentiments.get(s);
+                switch (this.sentimentMood) {
+                    case 'P':
+                        if(sentiments.get(s) > 0) tweetSentimentScore += sentiments.get(s);
+                        break;
+                    case 'N':
+                        if(sentiments.get(s) < 0) tweetSentimentScore += sentiments.get(s);
+                        break;
+                    default:
+                        tweetSentimentScore += sentiments.get(s);
+                }
+
             }
         }
 
