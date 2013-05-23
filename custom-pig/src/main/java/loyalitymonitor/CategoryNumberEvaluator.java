@@ -56,6 +56,8 @@ public class CategoryNumberEvaluator extends EvalFunc<DataBag> {
         String[] splitInputLine = inputLine.split("\\s");
         Set<String> campaignIds = new HashSet<String>();
         for(String s : splitInputLine) {
+            // remove all punctuation symbols
+            s = s.replaceAll("(\\w+)\\p{Punct}(\\s|$)", "$1$2");
             if( categoryDims.containsKey(s) ) {
                 for( String categoryId : categoryDims.get(s) ) {
                     if( campaignIds.contains(categoryId) ) continue;

@@ -42,7 +42,8 @@ public class PigBaseAggTest {
                 "output=null",
                 "parallel=2",
                 String.format("pathToElephantBird=file://%s/jars/elephant-bird-pig-3.0.0.jar", pathToPig),
-                String.format("pathToSimpleJson=file://%s/jars/json-simple-1.1.1.jar", pathToPig)
+                String.format("pathToSimpleJson=file://%s/jars/json-simple-1.1.1.jar", pathToPig),
+                String.format("pathToCustomLib=file://%s/jars/custom-pig-1.0-SNAPSHOT.jar", pathToPig)
         };
 
         this.args = _args;

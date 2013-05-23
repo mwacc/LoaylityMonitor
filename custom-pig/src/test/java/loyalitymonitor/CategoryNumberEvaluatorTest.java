@@ -31,7 +31,7 @@ public class CategoryNumberEvaluatorTest {
     @Test
     public void testOneBrandInTweet() throws IOException {
         Tuple tuple = tupleFactory.newTuple();
-        tuple.append("Obama decided to go to vacation in August");
+        tuple.append("http://t.co/plqm772pZT: President Obama: Our prayers are with Oklahoma http://t.co/KA39nyo4L0 #Pinterest #news");
 
         DataBag bag = evaluator.exec(tuple);
         Assert.assertEquals("More than one tuple has been emitted by evaluator", 1, bag.size());
