@@ -23,8 +23,6 @@
             <column name="created_at" type="TIMESTAMP"/>
             <column name="messagenum" type="int"/>
             <column name="sentiments" type="decimal(10,2)"/>
-            <column name="possentiment" type="decimal(10,2)"/>
-            <column name="negsentiment" type="decimal(10,2)"/>
         </createTable>
         <addForeignKeyConstraint constraintName="category_fk"
             baseTableName="sentiments_facts"
