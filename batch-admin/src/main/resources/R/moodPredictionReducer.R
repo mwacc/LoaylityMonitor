@@ -24,6 +24,7 @@ while (length(next.line <- readLines(conn, n=1)) > 0) {
   # same key or first processing
   if( prev_key == '' | prev_key == cur_key ) {
     prev_key <- cur_key
+    # date format 'yyyyMMddhh' must be converted to long to get correct statistics analyse
     dates_vector <- append(dates_vector, as.numeric(line[2]))
     count_vector <- append(count_vector, as.numeric(line[3]))
     avg_vector<- append(avg_vector, as.double(line[4]))
