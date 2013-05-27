@@ -4,9 +4,11 @@ import org.slf4j.LoggerFactory
 /* Using sqoop to export data into db */
 Logger log = LoggerFactory.getLogger(this.getClass())
 
-def command = """sqoop export --connect
+def command = """${pathToSqoop}/sqoop export --connect
  '${jdbcConnection}' --table ${tableName}
- --export-dir ${exportDir} --staging-table ${tableName}_stg --clear-staging-table"""
+ --export-dir ${exportDir} --staging-table ${tableName}_stg --clear-staging-table
+ --columns created_at,campaignid,messagenum,sentiments
+ -m 1 --input-fields-terminated-by '\t'"""
 
 
 StringBuilder output = new StringBuilder()
