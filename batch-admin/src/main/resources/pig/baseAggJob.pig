@@ -18,7 +18,7 @@ DEFINE ExtractCategory loyalitymonitor.CategoryNumberEvaluator();
 DEFINE GetSentiment loyalitymonitor.SentimentsEvaluator();
 DEFINE RoundUpDate loyalitymonitor.TimestampRoundUp('5');
 
--- raw_line = LOAD '/loyality/flume/tweets/2013/05/27/08/' AS (line:CHARARRAY);
+-- raw_line = LOAD '/loyality/flume/tweets/2013/05/27/' AS (line:CHARARRAY);
 raw_line = LOAD '$input' AS (line:CHARARRAY);
 json = FOREACH raw_line GENERATE StringToTweet(line);
 tweets = FOREACH json GENERATE $0#'text' AS text, $0#'created_at' AS timestamp;
