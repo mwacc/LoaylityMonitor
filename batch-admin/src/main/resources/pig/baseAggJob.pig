@@ -12,17 +12,18 @@ set mapred.cache.files '/loyalitymonitor/dimcache/categories.txt#categories,/loy
 set mapred.create.symlink 'yes';
 
 -- it works in production, but custom loader doesn't work with PigUnit
---DEFINE TweetsLoader com.twitter.elephantbird.pig.load.JsonLoader();
+-- DEFINE TweetsLoader com.twitter.elephantbird.pig.load.JsonLoader();
 DEFINE StringToTweet com.twitter.elephantbird.pig.piggybank.JsonStringToMap();
 DEFINE ExtractCategory loyalitymonitor.CategoryNumberEvaluator();
 DEFINE GetSentiment loyalitymonitor.SentimentsEvaluator();
 DEFINE RoundUpDate loyalitymonitor.TimestampRoundUp('5');
 
--- raw_line = LOAD '/loyalitymonitor/data/test/tweet.json' AS (line:CHARARRAY);
+-- raw_line = LOAD '/loyality/flume/tweets/2013/05/27/08/' AS (line:CHARARRAY);
 raw_line = LOAD '$input' AS (line:CHARARRAY);
 json = FOREACH raw_line GENERATE StringToTweet(line);
 tweets = FOREACH json GENERATE $0#'text' AS text, $0#'created_at' AS timestamp;
-categorized_tweets = FOREACH tweets GENERATE
+filtered_tweets = FILTER tweets BY text IS NOT NULL AND timestamp IS NOT NULL;
+categorized_tweets = FOREACH filtered_tweets GENERATE
     FLATTEN(ExtractCategory(text)) as (category, text),
     GetSentiment(text) as sentiment,
     RoundUpDate(timestamp) as timestamp;
