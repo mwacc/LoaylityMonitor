@@ -13,7 +13,7 @@ public class TimestampRoundUpTest {
 
     @Test
     public void testDateRoundUpTo10() throws IOException {
-        TimestampRoundUp eval = new TimestampRoundUp("10");
+        TimestampRoundUp eval = new TimestampRoundUp("10", "yyyyMMddHHmm");
 
         Tuple tuple = tupleFactory.newTuple();
         tuple.append("Wed May 22 08:32:41 +0000 2013");
@@ -24,7 +24,7 @@ public class TimestampRoundUpTest {
 
     @Test
     public void testDateRoundUpTo15() throws IOException {
-        TimestampRoundUp eval = new TimestampRoundUp("15");
+        TimestampRoundUp eval = new TimestampRoundUp("15", "yyyyMMddHHmm");
 
         Tuple tuple = tupleFactory.newTuple();
         tuple.append("Wed May 22 08:49:41 +0000 2013");
@@ -35,7 +35,7 @@ public class TimestampRoundUpTest {
 
     @Test
     public void testDateRoundUpToZero() throws IOException {
-        TimestampRoundUp eval = new TimestampRoundUp("15");
+        TimestampRoundUp eval = new TimestampRoundUp("15", "yyyyMMddHHmm");
 
         Tuple tuple = tupleFactory.newTuple();
         tuple.append("Wed May 22 08:14:15 +0000 2013");
