@@ -23,16 +23,27 @@
             <column name="created_at" type="TIMESTAMP"/>
             <column name="messagenum" type="int"/>
             <column name="sentiments" type="decimal(10,2)"/>
+        <createTable tableName="sentiments_facts_stg">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="campaignid" type="int"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="messagenum" type="int"/>
+            <column name="sentiments" type="decimal(10,2)"/>
         </createTable>
+        <!--
         <addForeignKeyConstraint constraintName="category_fk"
             baseTableName="sentiments_facts"
             baseColumnNames="campaignid"
             referencedTableName="campaign_dim"
             referencedColumnNames="id"
-        />
+        />  -->
         <rollback>
+            <!--
             <dropForeignKeyConstraint baseTableName="sentiments_facts"
                                       constraintName="category_fk"/>
+                                      -->
             <dropTable tableName="sentiments_facts"/>
             <dropTable tableName="campaign_dim"/>
         </rollback>
