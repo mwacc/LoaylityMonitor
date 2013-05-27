@@ -23,12 +23,16 @@ public class TimestampRoundUp extends EvalFunc<String> {
     private int roundUpTo;
 
     public TimestampRoundUp(String minutes) {
+        this(minutes, "yyyy-MM-dd HH:mm:ss");
+    }
+
+    public TimestampRoundUp(String minutes, String outputformat) {
         this.roundUpTo = Integer.parseInt(minutes);
 
         this.inputDateFormat = new SimpleDateFormat(TWITTER);
         this.inputDateFormat.setLenient(true);
         this.inputDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        this.outDateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+        this.outDateFormat = new SimpleDateFormat(outputformat);
         this.outDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
