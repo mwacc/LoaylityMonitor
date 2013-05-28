@@ -48,6 +48,7 @@
         <module>custom-pig</module>
         <module>windows-pig-fix</module>
         <module>database</module>
+        <module>workflow</module>
     </modules>
 
     <repositories>
