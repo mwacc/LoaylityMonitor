@@ -35,6 +35,8 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <!-- Mock system exiter to do not break context -->
+    <bean id="systemExiter" class="loaylitymonitor.utils.MockSystemExiter"/>
 
 
     <hdp:pig-template/>
