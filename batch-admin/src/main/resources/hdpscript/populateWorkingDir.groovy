@@ -1,0 +1,1 @@
+if( !fsh.rename(inputFlume, output) ) throw new RuntimeException("${inputFlume} can't be renamed to ${output}")

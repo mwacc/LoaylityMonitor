@@ -4,18 +4,19 @@
        xmlns:hdp="http://www.springframework.org/schema/hadoop"
        xmlns:batch="http://www.springframework.org/schema/batch"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
        http://www.springframework.org/schema/hadoop http://www.springframework.org/schema/hadoop/spring-hadoop.xsd
        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
     <context:property-placeholder  location="app.properties"/>
+    <import resource="classpath:env-context.xml"/>
 
     <!-- <hdp:configuration id="hadoopConfiguration" properties-location="classpath:app.properties"/> -->
 
     <hdp:configuration id="hadoopConfiguration"/>
 
-    <hdp:pig-factory exec-type="LOCAL" configuration-ref="hadoopConfiguration" />
+
 
 
     <batch:job-repository id="jobRepository"
@@ -48,26 +49,21 @@
 
     <!-- Batch -->
     <batch:job id="baseAggJob" job-repository="jobRepository">
-        <batch:step id="prepareData" >
-            <batch:tasklet ref="prepare-script-tasklet" />
+        <batch:step id="pickupProcessingDirectory" >
+            <batch:tasklet ref="pickup-processing-directory" />
+        </batch:step>
+        <batch:step id="baseAggProcessing" >
+            <batch:tasklet ref="base-agg-processing" />
+        </batch:step>
+        <batch:step id="importIntoDb" >
+            <batch:tasklet ref="import-into-db" />
+        </batch:step>
+        <batch:step id="deleteProcessedDirs" >
+            <batch:tasklet ref="delete-processed-dirs" />
         </batch:step>
 
     </batch:job>
 
-    <!-- groovy script that push data to timed directory (preparation step)
-     Scope 'step' is obligated to provide access to jobParameters
-     -->
-    <hdp:script-tasklet id="prepare-script-tasklet" scope="step">
-        <hdp:script language="groovy" evaluate="ALWAYS">
-            // fs - org.apache.hadoop.fs.FileSystem
-            // fsh - org.springframework.data.hadoop.fs.FsShell instance based on 'hadoopConfiguration' bean
-            // distcp	org.springframework.data.hadoop.fs.DistributedCopyUtil	Programmatic access to DistCp
-            // jobParamaters = job parameters from spring batch
-
-            println "Inside tasklet"
-
-        </hdp:script>
-    </hdp:script-tasklet>
 
 
     <bean id="dataSource" class="org.enhydra.jdbc.pool.StandardPoolDataSource"
@@ -90,5 +86,6 @@
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
+
 
 </beans>

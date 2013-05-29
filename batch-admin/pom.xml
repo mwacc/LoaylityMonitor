@@ -257,6 +257,7 @@
                                     <filtering>true</filtering>
                                     <includes>
                                         <include>**/*.properties</include>
+                                        <include>**/env-context.xml</include>
                                     </includes>
                                 </resource>
                             </resources>
@@ -271,6 +272,12 @@
                 <configuration>
                     <stopKey>foo</stopKey>
                     <stopPort>9999</stopPort>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>spring.profiles.active</name>
+                            <value>mwacc</value>
+                        </systemProperty>
+                    </systemProperties>
                 </configuration>
             </plugin>
 
