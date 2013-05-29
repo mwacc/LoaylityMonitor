@@ -15,7 +15,7 @@
         <hadoop.cloudera.version>0.20.2-cdh3u4</hadoop.cloudera.version>
         <avro.version>1.7.0</avro.version>
         <flume.version>1.3.1</flume.version>
-        <spring.version>3.0.7.RELEASE</spring.version>
+        <spring.version>3.1.1.RELEASE</spring.version>
         <mule.version>3.2.1</mule.version>
         <spring.hadoop.version>1.0.0.RELEASE</spring.hadoop.version>
         <spring.batch.version>2.1.7.RELEASE</spring.batch.version>
@@ -48,7 +48,6 @@
         <module>custom-pig</module>
         <module>windows-pig-fix</module>
         <module>database</module>
-        <module>workflow</module>
     </modules>
 
     <repositories>
