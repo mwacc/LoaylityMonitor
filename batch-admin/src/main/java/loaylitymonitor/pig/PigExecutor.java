@@ -43,16 +43,20 @@ public class PigExecutor {
         return !isFailed;
     }
 
-    public boolean runBaseAggPigScript() throws IOException {
+    public String runBaseAggPigScript() throws IOException {
+        String curDate = DateUtils.getFormdatedDate(new Date());
         Map<String, String> params = new HashMap();
         params.put("input", "/loyality/working");
-        params.put("output", "/loyality/agg/" + DateUtils.getFormdatedDate(new Date()));
+        params.put("output", "/loyality/agg/" + curDate);
         params.put("parallel", "2");
         params.put("pathToElephantBird", String.format("%s/jars/elephant-bird-pig-3.0.0.jar", pathToPig));
         params.put("pathToSimpleJson", String.format("%s/jars/json-simple-1.1.1.jar", pathToPig));
         params.put("pathToCustomLib", String.format("%s/jars/custom-pig-1.0-SNAPSHOT.jar", pathToPig));
 
-        return runScript(String.format("%s/pig/baseAggJob.pig", pathToPig), params);
+        if( !runScript(String.format("%s/pig/baseAggJob.pig", pathToPig), params) ) {
+            throw new IOException("Pig job failed");
+        }
+        return curDate;
     }
 
 }

@@ -1,5 +1,6 @@
 package loaylitymonitor;
 
+import loaylitymonitor.cmd.SqoopRunner;
 import loaylitymonitor.pig.PigExecutor;
 import loaylitymonitor.utils.FileSystemUtils;
 import loaylitymonitor.utils.HadoopConfiguration;
@@ -18,8 +19,10 @@ public class BaseAggFlow {
         HadoopConfiguration hdpCfg = new HadoopConfiguration();
         FileSystemUtils fs = new FileSystemUtils(hdpCfg);
         PigExecutor pigExecutor = new PigExecutor( args[0] );
+        SqoopRunner sqoop = new SqoopRunner();
 
-        if( fs.isReadyDataForProcessing() && pigExecutor.runBaseAggPigScript() ) {
+        if( fs.isReadyDataForProcessing() ) {
+            sqoop.runExport(pigExecutor.runBaseAggPigScript(), "sentiments_facts", "created_at","campaignid,messagenum","sentiments" );
             fs.removeProcessedDirs();
             System.out.println("Sucess!!!!");
         }
