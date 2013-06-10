@@ -8,7 +8,7 @@ SET  default_parallel $parallel
 SET  mapred.job.name 'Base Twitter aggregation job'
 SET  pig.tmpfilecompression false
 
-set mapred.cache.files '/loyalitymonitor/dimcache/categories.txt#categories,/loyalitymonitor/dimcache/sentiments.txt#sentiments';
+set mapred.cache.files '/loyality/dimcache/categories.txt#categories,/loyality/dimcache/sentiments.txt#sentiments';
 set mapred.create.symlink 'yes';
 
 -- it works in production, but custom loader doesn't work with PigUnit
