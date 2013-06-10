@@ -32,7 +32,10 @@ public class SqoopRunner {
         logCommandExecution(pr.getErrorStream(), true);
         logCommandExecution(pr.getErrorStream(), false);
 
-        if( pr.exitValue() != 0 ) throw new IOException("Sqoop export failed!");
+        if( pr.exitValue() != 0 ) {
+            log.info("To re-run export execute next command {}", cmd);
+            throw new IOException("Sqoop export failed!");
+        }
     }
 
     private void logCommandExecution(InputStream is, boolean isError) {

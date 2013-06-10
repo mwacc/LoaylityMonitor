@@ -17,32 +17,36 @@ conn <- file("stdin", open="r")
 while (length(next.line <- readLines(conn, n=1)) > 0) {
   # split string by Tab and flatten result into vector
   line <- unlist( strsplit(next.line, "\t") )
-
   cur_key <- line[1]
 
-  cat(prev_key, cur_key, '\n', sep='\t')
-  # same key or first processing
-  if( prev_key == '' | prev_key == cur_key ) {
-    prev_key <- cur_key
-    # date format 'yyyyMMddhh' must be converted to long to get correct statistics analyse
-    dates_vector <- append(dates_vector, as.numeric(line[2]))
-    count_vector <- append(count_vector, as.numeric(line[3]))
-    avg_vector<- append(avg_vector, as.double(line[4]))
-  # found a boundary; emit prediction
-  } else {
+  # not first processing and key was changed
+  if( prev_key != '' && prev_key != cur_key ) {
     # get prediction for tweets count
     mod_count <- lm(count_vector ~ dates_vector)
-    prediction_count <- predict(mod_count, data.frame( dates_vector=c( dates_vector[length(dates_vector)]+10 ) ))
+    rep_date <- dates_vector[length(dates_vector)]
+    rep_date <- rep_date+60*60
+    prediction_count <- predict(mod_count, data.frame( dates_vector=c( rep_date )))
+
 
     # get prediction for average sentiment amount
     mod_avg <- lm(avg_vector ~ dates_vector)
-    prediction_avg <- predict(mod_avg, data.frame( dates_vector=c( dates_vector[length(dates_vector)]+10 ) ))
+    prediction_avg <- predict(mod_avg, data.frame( dates_vector=c( dates_vector[length(dates_vector)]+1 ) ))
 
     sink()
-    cat(prev_key, dates_vector[length(dates_vector)]+2, prediction_count, "\n", sep="\t")
-    cat(prev_key, dates_vector[length(dates_vector)]+2, prediction_avg, "\n", sep="\t")
+    cat(prev_key,  format( rep_date, format="%Y%m%d%H%M" ), floor( prediction_count ),round(prediction_avg, digits=2 ), "\n", sep="\t")
     sink("/dev/null")
+
+    # new key - new vectors
+    dates_vector <- vector()
+    count_vector <- vector()
+    avg_vector <-  vector()
   }
 
+  prev_key <- cur_key
+
+  # setup values from passed line
+  dates_vector <- append(dates_vector, as.POSIXct(line[2], tz="0", format="%Y-%m-%d %H:%M:%S"))
+  count_vector <- append(count_vector, as.numeric(line[3]))
+  avg_vector<- append(avg_vector, as.double(line[4]))
 }
 close(conn)
