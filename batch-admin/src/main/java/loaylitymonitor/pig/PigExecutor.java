@@ -18,14 +18,14 @@ public class PigExecutor {
     private final PigServer pigServer;
     private final String pathToPig;
 
-    public PigExecutor(String pathToPig) throws IOException {
+    public PigExecutor() throws IOException {
         Properties props = new Properties();
         props.setProperty("fs.default.name", "hdfs://localhost:9000");
         props.setProperty("mapred.job.tracker", "localhost:9001");
 
 
         this.pigServer = new PigServer(ExecType.MAPREDUCE, props);
-        this.pathToPig = pathToPig;
+        this.pathToPig = "/share/testing";
     }
 
     public boolean runScript(String scriptName, Map<String, String> params) throws IOException {
