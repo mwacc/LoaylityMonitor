@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class SqoopRunner {
     private static Logger log = LoggerFactory.getLogger(SqoopRunner.class);
 
-    private static final String exportCmd = "%s/sqoop export --connect '%s'  --table %s  --export-dir %s --staging-table %s " +
+    private static final String exportCmd = "sqoop export --connect '%s'  --table %s  --export-dir %s --staging-table %s " +
             "--clear-staging-table --columns %s -m 1 --input-fields-terminated-by '\t'";
 
     public SqoopRunner() {
@@ -23,7 +23,8 @@ public class SqoopRunner {
             columnsStr.append( String.format("%s,", s) );
         }
 
-        String cmd = String.format(exportCmd, "/share/sqoop-1.4.4-SNAPSHOT.bin__hadoop-1.0.0/bin/sqoop",
+        
+        String cmd = String.format(exportCmd, 
                 "jdbc:mysql://10.25.9.245:3306/loyalitymonitor?relaxAutoCommit=true&autoReconnect=true&useUnicode=true&characterEncoding=UTF8&user=root&password=root",
                 tableName, exportDir, tableName+"_stg", columnsStr.substring(0, columnsStr.length() - 1));
 
