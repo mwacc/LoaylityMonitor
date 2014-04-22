@@ -58,6 +58,7 @@ public class TwitterSource extends AbstractSource
         accessToken = context.getString(TwitterAuth.ACCESS_TOKEN_KEY);
         accessTokenSecret = context.getString(TwitterAuth.ACCESS_TOKEN_SECRET_KEY);
 
+        // TODO: fetch keywords from configuration file
         String keywordString = context.getString("keywords", "Obama");
         keywords = keywordString.split(",");
         for (int i = 0; i < keywords.length; i++) {
